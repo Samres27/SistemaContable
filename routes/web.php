@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VentaController;
 use App\Http\Controllers\LiquidacionController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\BoletaController;
+use App\Http\Controllers\ProductoController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,13 +18,6 @@ Route::get('/tabla', function () {
     #$usuarios[0]->nombre =samuel;
     return view('tabla');#, compact('usuarios'));
 });
-
-Route::get('ventas', [VentaController::class, 'index'])->name('ventas.index');
-Route::get('ventas/importar', [VentaController::class, 'importForm'])->name('ventas.import.form');
-Route::post('ventas/importar', [VentaController::class, 'import'])->name('ventas.import');
-Route::get('ventas/{producto}/edit', [VentaController::class, 'edit'])->name('ventas.edit');
-Route::put('ventas/{producto}', [VentaController::class, 'update'])->name('ventas.update');
-Route::delete('ventas/{producto}', [VentaController::class, 'destroy'])->name('ventas.destroy');
 
 Route::prefix('liquidaciones')->group(function () {
     Route::get('/', [LiquidacionController::class, 'index_all'])->name('liquidaciones.index_all');
@@ -43,4 +38,35 @@ Route::prefix('proveedores')->group(function () {
     Route::get('/{proveedor}', [ProveedorController::class, 'show'])->name('proveedores.show');
     Route::put('/{proveedor}', [ProveedorController::class, 'update'])->name('proveedores.update');
     Route::delete('/{proveedor}', [ProveedorController::class, 'destroy'])->name('proveedores.destroy');
+});
+
+Route::prefix('clientes')->group(function () {
+    Route::get('/', [ClienteController::class, 'index'])->name('clientes.index');
+    Route::get('/crear', [ClienteController::class, 'create'])->name('clientes.create');
+    Route::post('/', [ClienteController::class, 'store'])->name('clientes.store');
+    Route::get('/{cliente}/editar', [ClienteController::class, 'edit'])->name('clientes.edit');
+    Route::get('/{cliente}', [ClienteController::class, 'show'])->name('clientes.show');
+    Route::put('/{cliente}', [ClienteController::class, 'update'])->name('clientes.update');
+    Route::delete('/{cliente}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
+});
+
+Route::prefix('ventas')->group(function () {
+    Route::get('/', [BoletaController::class, 'index_all'])->name('ventas.index_all');
+    //Route::get('/{proveedor}', [BoletaController::class, 'index'])->name('ventas.index');
+    Route::get('/crear', [BoletaController::class, 'create'])->name('ventas.create');
+    Route::post('/', [BoletaController::class, 'store'])->name('ventas.store');
+    Route::get('/{boleta}/editar', [BoletaController::class, 'edit'])->name('ventas.edit');
+    Route::get('/{boleta}', [BoletaController::class, 'show'])->name('ventas.show');
+    Route::put('/{boleta}', [BoletaController::class, 'update'])->name('ventas.update');
+    Route::delete('/{boleta}', [BoletaController::class, 'destroy'])->name('ventas.destroy');
+});
+
+Route::prefix('productos')->group(function () {
+    Route::get('/', [ProductoController::class, 'index'])->name('productos.index');
+    Route::get('/crear', [ProductoController::class, 'create'])->name('productos.create');
+    Route::post('/', [ProductoController::class, 'store'])->name('productos.store');
+    Route::get('/{producto}/editar', [ProductoController::class, 'edit'])->name('productos.edit');
+    Route::get('/{producto}', [ProductoController::class, 'show'])->name('productos.show');
+    Route::put('/{producto}', [ProductoController::class, 'update'])->name('productos.update');
+    Route::delete('/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 });

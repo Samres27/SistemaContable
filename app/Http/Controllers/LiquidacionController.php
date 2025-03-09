@@ -51,7 +51,7 @@ class LiquidacionController extends Controller
             'peso_tiki_buche' => 'required|numeric|min:0',
             'modalidad_calculo' => 'required|in:opcion1,opcion2',
             'precio' => 'required|numeric|min:0',
-            'items' => 'required|array',  
+            'items' => 'nullable|array',  
             'items.*.nombre_item' => 'required|string|max:255',  
             'items.*.cantidad' => 'required|numeric|min:1',  
             'items.*.precio' => 'required|numeric|min:0.01',  
@@ -68,11 +68,15 @@ class LiquidacionController extends Controller
 
         $items = $request->input('items');
         
-        foreach ($items as $item) {
-            $descuento = new Descuento($item);
-            $descuento->total = $descuento->calcularTotal();
-            $descuento->liquidacion_id = $liquidacion->id;
-            $descuento->save();
+       
+        if (!is_null($items) && count($items) < 0) {
+        
+            foreach ($items as $item) {
+                $descuento = new Descuento($item);
+                $descuento->total = $descuento->calcularTotal();
+                $descuento->liquidacion_id = $liquidacion->id;
+                $descuento->save();
+            }
         }
         
         $liquidacion->comprobante = 'LIQ-' . str_pad($liquidacion->id, 6, '0', STR_PAD_LEFT);
@@ -109,7 +113,7 @@ class LiquidacionController extends Controller
             'peso_tiki_buche' => 'required|numeric|min:0',
             'modalidad_calculo' => 'required|in:opcion1,opcion2',
             'precio' => 'required|numeric|min:0',
-            'items' => 'required|array',  
+            'items' => 'nullable|array',  
             'items.*.nombre_item' => 'required|string|max:255',  
             'items.*.cantidad' => 'required|numeric|min:0',  
             'items.*.precio' => 'required|numeric|min:0',  
@@ -125,31 +129,32 @@ class LiquidacionController extends Controller
         $items = $request->input('items');
         $validIndexes = Descuento::pluck('id')->toArray();
         
-        foreach ($items as $item) {
-            #agregar
-            if ($item["id"] ==-1){
-                $descuento = new Descuento($item);
-                $descuento->total = $descuento->calcularTotal();
-                $descuento->liquidacion_id = $liquidacion->id;
-                if($descuento->total){$descuento->save();}
-                
-            }else{
-                #eliminar
-                if (in_array($item["id"], $validIndexes)) {
-                    $descuento = Descuento::find($item["id"]);
-                    $descuento->fill($item);
+        if (!is_null($items) && count($items) < 0) {
+            foreach ($items as $item) {
+                #agregar
+                if ($item["id"] ==-1){
+                    $descuento = new Descuento($item);
                     $descuento->total = $descuento->calcularTotal();
-                    if ($descuento->total ==0){
-                        $descuento->delete();
-                    }else{
-                        $descuento->save();
-                    }
+                    $descuento->liquidacion_id = $liquidacion->id;
+                    if($descuento->total){$descuento->save();}
                     
-                }
+                }else{
+                    #eliminar
+                    if (in_array($item["id"], $validIndexes)) {
+                        $descuento = Descuento::find($item["id"]);
+                        $descuento->fill($item);
+                        $descuento->total = $descuento->calcularTotal();
+                        if ($descuento->total ==0){
+                            $descuento->delete();
+                        }else{
+                            $descuento->save();
+                        }
+                        
+                    }
 
+                }
             }
         }
-
         $liquidacion->total_descuento = $liquidacion->calcularTotalDescuento();
         $liquidacion->save();
 

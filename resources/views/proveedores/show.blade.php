@@ -51,7 +51,7 @@
                             <td class="text-center">{{ $liquidacion->fecha }}</td>
                             <td class="text-center">{{ $liquidacion->nro_pollos }}</td>
                             <td class="text-center">{{ number_format($liquidacion->peso_neto, 2) }} kg</td>
-                            <td class="text-center">{{ number_format($liquidacion->total, 2) }}</td>
+                            <td class="text-center">{{ number_format($liquidacion->total_descuento, 2) }}</td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -26,6 +26,18 @@
                            class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
                             Liquidaciones
                         </a>
+                        <a href="{{ route('clientes.index') }}" 
+                           class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
+                            Clientes
+                        </a>
+                        <a href="{{ route('ventas.index_all') }}" 
+                           class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
+                            Ventas
+                        </a>
+                        <a href="{{ route('productos.index') }}" 
+                           class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
+                            Productos
+                        </a>
                     </div>
                 </div>
             </div>

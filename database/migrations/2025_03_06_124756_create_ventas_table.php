@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha');
-            $table->integer('nro_reci');
+            $table->unsignedBigInteger('boleta_id');
             $table->string('nombre');
-            $table->float('peso', 8, 2)->nullable();
-            $table->float('precio', 10, 2)->nullable();
-            $table->float('monto', 10, 2)->nullable();
+            $table->decimal('cantidad')->nullable();
+            $table->decimal('precio')->nullable();
+            $table->decimal('total')->nullable();
             $table->timestamps();
+            $table->foreign('boleta_id')->references('id')->on('boletas');
         });
     }
 

@@ -225,11 +225,7 @@
             tablaMostrada = true;
         }
         agregarFila();
-        
-        
-
-
-        
+     
     });
 </script>
 @endsection

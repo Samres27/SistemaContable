@@ -2,37 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 
 class Venta extends Model
 {
-    use HasFactory;
+    protected $table = 'ventas';
 
-    /**
-     * Los atributos que son asignables masivamente.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'fecha',
-        'nro_reci',
+        'boleta_id',
         'nombre',
-        'peso',
-        'precio',
-        'monto',
-    ];
+        'cantidad', 
+        'precio', 
+        'total',
+    ];   
 
-    /**
-     * Los atributos que deben ser convertidos.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'fecha' => 'date',
-        'nro_reci' => 'integer', 
-        'precio' => 'float',
-        'peso' => 'float',
-        'monto' => 'float',
-    ];
+    public function boleta()
+    {
+        return $this->belongsTo(Boleta::class, 'boleta_id');
+    }
+
+    public function calcularTotal()
+    {
+        return $this->cantidad * $this->precio;
+    }
 }

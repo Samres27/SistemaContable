@@ -50,9 +50,9 @@
             
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 py-2 border">Nombre Item</th>
+                        <th class="px-4 py-2 border">Nombre</th>
                         <th class="px-4 py-2 border">Cantidad</th>
-                        <th class="px-4 py-2 border">Precio x Item</th>
+                        <th class="px-4 py-2 border">Precio</th>
                         <th class="px-4 py-2 border">Resultado</th>
                     </tr>
                 </thead>

@@ -1,127 +1,63 @@
-{{-- resources/views/ventas/index.blade.php --}}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de ventas</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 p-4">
-    <div class="max-w-6xl mx-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Listado de ventas</h1>
-            <a href="{{ route('ventas.import.form') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Importar Excel
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-md-10">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">Ventas</h1>
+        </div>
+        <div class="col-md-2 text-right  mb-10">
+            <a href="{{ route('ventas.create') }}" class="m-3 p-2 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300">
+                Nueva Venta
             </a>
         </div>
-        
-        @if(session('success'))
-            <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-                {{ session('success') }}
-            </div>
-        @endif
-        
-        <!-- Contenedor con scroll horizontal en dispositivos pequeños -->
-        <div class="overflow-x-auto bg-white rounded-lg shadow hidden lg:block">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Num Reci</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Peso</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse($ventas as $producto)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $producto->nombre }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ \Carbon\Carbon::parse($producto->fecha)->format('Y-m-d') }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $producto->nro_reci }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ number_format($producto->peso, 2) }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">${{ number_format($producto->precio, 2) }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">${{ number_format($producto->precio*$producto->peso, 2) }}</div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                                No hay ventas disponibles
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- Versión para dispositivos móviles (tarjetas en lugar de tabla) -->
-        <div class="mt-4 block lg:hidden">
-            <!-- <h2 class="text-lg font-semibold mb-2 text-gray-700">Vista móvil (tarjetas)</h2> -->
-            <div class="space-y-4">
-                @forelse($ventas as $producto)
-                    <div class="bg-white rounded-lg shadow overflow-hidden">
-                        <div class="p-4 border-b">
-                            <h3 class="text-lg font-medium text-gray-900">{{ $producto->nombre }}</h3>
-                        </div>
-                        <div class="px-4 py-3 border-b">
-                            <div class="text-sm font-medium text-gray-500">Fecha</div>
-                            <div class="mt-1">{{ \Carbon\Carbon::parse($producto->fecha)->format('Y-m-d') }}</div>
-                        </div>
-                        <div class="px-4 py-3 border-b">
-                            <div class="text-sm font-medium text-gray-500">Nro Boleta</div>
-                            <div class="mt-1">{{ $producto->nro_reci}}</div>
-                        </div>
-                        <div class="px-4 py-3 border-b">
-                            <div class="text-sm font-medium text-gray-500">Peso</div>
-                            <div class="mt-1">{{ number_format($producto->peso, 2) }}</div>
-                        </div>
-                        <div class="px-4 py-3 border-b">
-                            <div class="text-sm font-medium text-gray-500">Precio</div>
-                            <div class="mt-1">${{ number_format($producto->precio, 2) }}</div>
-                        </div>
-                        <div class="px-4 py-3 border-b">
-                            <div class="text-sm font-medium text-gray-500">Monto</div>
-                            <div class="mt-1">${{ number_format($producto->precio * $producto->peso, 2) }}</div>
-                        </div>
-                        <div class="px-4 py-3 flex justify-end">
-                            <a href="{{ route('ventas.edit', $producto->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Editar</a>
-                            <form class="inline" action="{{ route('ventas.destroy', $producto->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('¿Estás seguro de eliminar este producto?')">
-                                    Eliminar
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                @empty
-                    <div class="bg-white rounded-lg shadow p-6 text-center text-gray-500">
-                        No hay ventas disponibles
-                    </div>
-                @endforelse
-            </div>
-        </div>
-        
-        <!-- Paginación -->
-        @if(isset($ventas) && method_exists($ventas, 'links'))
-            <div class="mt-4">
-                {{ $ventas->links() }}
-            </div>
-        @endif
     </div>
-</body>
-</html>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <table  class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+            <tr>
+                <th>Comprobante</th>
+                <th>Cliente</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @foreach($boletas as $boleta)
+            <tr >
+                <td class="text-center">{{ $boleta->comprobante }}</td>
+                <td class="text-center">{{ $boleta->cliente->nombre }}</td>
+                <td class="text-center">{{ $boleta->fecha }}</td>
+                <td class="text-center">{{ number_format($boleta->total, 2) }}</td>
+                <td class="text-center px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    
+                        <a href="{{ route('ventas.show', $boleta) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">
+                            Ver
+                        </a>
+                        <a href="{{ route('ventas.edit', $boleta) }}" class="text-yellow-600 hover:text-yellow-900">
+                            Editar
+                        </a>
+                        <form action="{{ route('ventas.destroy', $boleta) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('¿Estás seguro?')">
+                                Eliminar
+                            </button>
+                        </form>
+                    
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    
+</div>
+@endsection

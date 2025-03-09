@@ -85,9 +85,7 @@
                 
                 </div>
             </div>
-            <script>
-                const descuentos = @json($descuentos);
-            </script>
+            
             <table  id="tabla" class="min-w-full divide-y divide-gray-200 mt-10 mb-10  hidden">
                 <thead class="bg-gray-50">
                     <tr>
