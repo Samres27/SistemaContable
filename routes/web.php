@@ -6,6 +6,7 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\BoletaController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\PagoController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -69,4 +70,26 @@ Route::prefix('productos')->group(function () {
     Route::get('/{producto}', [ProductoController::class, 'show'])->name('productos.show');
     Route::put('/{producto}', [ProductoController::class, 'update'])->name('productos.update');
     Route::delete('/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+});
+
+Route::prefix('pagos')->group(function () {
+    Route::get('/', [PagoController::class, 'index'])->name('pagos.index');
+    Route::get('/crear', [PagoController::class, 'create'])->name('pagos.create');
+    Route::get('/pagos-provedor/{proveedorId}', [PagoController::class, 'porProveedor'])->name('pagos.por-proveedor');
+    Route::post('/', [PagoController::class, 'store'])->name('pagos.store');
+    Route::get('/get-liquidaciones-by-proveedor',[PagoController::class, 'getLiquidacionesByProveedor'])->name('pagos.get-liquidacciones');
+    Route::get('/{pago}/editar', [PagoController::class, 'edit'])->name('pagos.edit');
+    Route::get('/{pago}', [PagoController::class, 'show'])->name('pagos.show');
+    Route::put('/{pago}', [PagoController::class, 'update'])->name('pagos.update');
+    Route::delete('/{pago}', [PagoController::class, 'destroy'])->name('pagos.destroy');
+});
+
+Route::prefix('cobros')->group(function () {
+    Route::get('/', [ProductoController::class, 'index'])->name('cobros.index');
+    Route::get('/crear', [ProductoController::class, 'create'])->name('cobros.create');
+    Route::post('/', [ProductoController::class, 'store'])->name('cobros.store');
+    Route::get('/{cobro}/editar', [ProductoController::class, 'edit'])->name('cobros.edit');
+    Route::get('/{cobro}', [ProductoController::class, 'show'])->name('cobros.show');
+    Route::put('/{cobro}', [ProductoController::class, 'update'])->name('cobros.update');
+    Route::delete('/{cobro}', [ProductoController::class, 'destroy'])->name('pagos.destroy');
 });

@@ -29,7 +29,7 @@
                     
                     <div class="form-group">
                         <label class="block text-gray-700 font-medium mb-2">Fecha</label>
-                        <input type="date" name="fecha" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="date" name="fecha" value="{{ old('fecha', date('Y-m-d')) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 
                 </div>

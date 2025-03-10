@@ -10,39 +10,49 @@
 
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                           
-                    </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="{{ route('proveedores.index') }}" 
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-                            Proveedores
-                        </a>
-                        <a href="{{ route('liquidaciones.index_all') }}" 
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-                            Liquidaciones
-                        </a>
-                        <a href="{{ route('clientes.index') }}" 
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-                            Clientes
-                        </a>
-                        <a href="{{ route('ventas.index_all') }}" 
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-                            Ventas
-                        </a>
-                        <a href="{{ route('productos.index') }}" 
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-                            Productos
-                        </a>
-                    </div>
+<nav class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-evenly h-16 text-center"> <!-- Cambié justify-between por justify-evenly -->
+            <div class="flex">
+                <div class="flex-shrink-0 flex items-center">
+                    <!-- Aquí puedes poner un logo o algo que prefieras -->
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="{{ route('proveedores.index') }}" 
+                       class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium m-auto">
+                        Proveedores
+                    </a>
+                    <a href="{{ route('liquidaciones.index_all') }}" 
+                       class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium m-auto">
+                        Liquidaciones
+                    </a>
+                    <a href="{{ route('pagos.index') }}" 
+                       class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium m-auto">
+                        Pagos a Proveedores
+                    </a>
+                    <div class='w-1/8'></div>
+                    <a href="{{ route('clientes.index') }}" 
+                       class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium m-auto">
+                        Clientes
+                    </a>
+                    <a href="{{ route('ventas.index_all') }}" 
+                       class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium m-auto">
+                        Ventas
+                    </a>
+                    <a href="{{ route('productos.index') }}" 
+                       class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium m-auto">
+                        Productos
+                    </a>
+                    <a href="{{ route('cobros.index') }}" 
+                       class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium m-auto">
+                        Pagos a Proveedores
+                    </a>
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
+
 
     <main class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-6">
         <div class="bg-white shadow-md rounded-lg p-6">

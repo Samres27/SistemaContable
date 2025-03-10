@@ -36,6 +36,11 @@ class Liquidacion extends Model
         return $this->hasMany(Descuento::class, 'liquidacion_id');
     }
 
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class, 'liquidacion_id');
+    }
+
     // Método para calcular peso neto
     public function calcularPesoNeto()
     {
