@@ -25,8 +25,28 @@ class Boleta extends Model
         return $this->hasMany(Venta::class, 'boleta_id');
     }
 
+    public function cobros()
+    {
+        return $this->hasMany(Cobro::class,'boleta_id');
+    }
+
     public function calcularTotalVenta()
     {
         return $this->ventas->sum('total');
+    }
+
+    public function calcularTotalCobro()
+    {
+        return $this->cobros->sum('monto');
+    }
+
+    public function calcularTotalSaldo()
+    {
+        return $this->calcularTotalVenta()-$this->calcularTotalCobro();
+    }
+
+    public function calcularCancelacion()
+    {
+        return (($this->calcularTotalSaldo())<=0);
     }
 }

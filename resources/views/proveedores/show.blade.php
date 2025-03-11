@@ -6,6 +6,11 @@
         <div class="card-header">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">Detalles del Proveedor</h2>
         </div>
+        <div class="col-md-4 text-end">
+            <a class="w-1/2 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300" href="{{ route('pagos.por-proveedor', $proveedor->id) }}" class="btn btn-primary">
+                <i class="fas fa-user"></i> Pagos del Proveedor
+            </a>
+        </div>
         <div class="grid md:grid-cols-2 gap-6">
             <div class="space-y-4">
                 <div class="col-md-6">

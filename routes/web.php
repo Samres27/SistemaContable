@@ -7,6 +7,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\BoletaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\CobroController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -85,11 +86,26 @@ Route::prefix('pagos')->group(function () {
 });
 
 Route::prefix('cobros')->group(function () {
-    Route::get('/', [ProductoController::class, 'index'])->name('cobros.index');
-    Route::get('/crear', [ProductoController::class, 'create'])->name('cobros.create');
-    Route::post('/', [ProductoController::class, 'store'])->name('cobros.store');
-    Route::get('/{cobro}/editar', [ProductoController::class, 'edit'])->name('cobros.edit');
-    Route::get('/{cobro}', [ProductoController::class, 'show'])->name('cobros.show');
-    Route::put('/{cobro}', [ProductoController::class, 'update'])->name('cobros.update');
-    Route::delete('/{cobro}', [ProductoController::class, 'destroy'])->name('pagos.destroy');
+    Route::get('/', [CobroController::class, 'index'])->name('cobros.index');
+    Route::get('/cliente/{clienteId}', [CobroController::class, 'clienteDetalle'])->name('cobros.cliente_detalle');
+    Route::get('/cliente/{clienteId}/boletas', [CobroController::class, 'getBoletasByCliente'])->name('cobros.cliente.boletas');
+    Route::get('/crear', [CobroController::class, 'create'])->name('cobros.create');
+    Route::post('/', [CobroController::class, 'store'])->name('cobros.store');
+    Route::get('/{cobro}/editar', [CobroController::class, 'edit'])->name('cobros.edit');
+    Route::get('/{cobro}', [CobroController::class, 'show'])->name('cobros.show');
+    Route::put('/{cobro}', [CobroController::class, 'update'])->name('cobros.update');
+    Route::delete('/{cobro}', [CobroController::class, 'destroy'])->name('pagos.destroy');
+});
+
+Route::get('/impresiones/{imp}', function ($imp) {
+    $viewPath = resource_path("views/impresiones/{$imp}.blade.php");
+
+    // Verificar si el archivo Blade existe
+    if (File::exists($viewPath)) {
+        // Si el archivo existe, cargar la vista
+        return view("impresiones.{$imp}");
+    } else {
+        // Si el archivo no existe, retornar un 404 o error
+        abort(404, 'Vista no encontrada');
+    }
 });
