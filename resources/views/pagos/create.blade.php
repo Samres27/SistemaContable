@@ -164,10 +164,12 @@
                 .then(response => response.json())
                 .then(data => {
                     data.forEach(liquidacion => {
-                        const option = document.createElement('option');
-                        option.value = liquidacion.id;
-                        option.textContent = liquidacion.texto;
-                        liquidacionSelect.appendChild(option);
+                        if (!liquidacion.cancelado){
+                            const option = document.createElement('option');
+                            option.value = liquidacion.id;
+                            option.textContent = liquidacion.texto;
+                            liquidacionSelect.appendChild(option);
+                        }
                     });
                 })
                 .catch(error => console.error('Error:', error));

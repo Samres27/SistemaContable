@@ -152,7 +152,6 @@ class PagoController extends Controller
     {
         $proveedorId = $request->proveedor_id;
         $liquidaciones = Liquidacion::where('proveedor_id', $proveedorId)
-            ->doesntHave('pagos')
             ->select('id', 'fecha', 'total_descuento')
             ->get()
             ->map(function($liquidacion) {
@@ -161,7 +160,8 @@ class PagoController extends Controller
                     'id' => $liquidacion->id,
                     'texto' => "Liquidación #{$liquidacion->id} - " . 
                         $fecha->format('d/m/Y') . 
-                        " - Total: $" . number_format($liquidacion->total_descuento, 2)
+                        " - Total: $" . number_format($liquidacion->calcularTotalSaldo(), 2),
+                    'cancelado' => $liquidacion->calcularCancelacion()
                 ];
             });
 

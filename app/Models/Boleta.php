@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Boleta extends Model
 {
     protected $table = 'boletas';
+    protected $dates = ['fecha'];
 
     protected $fillable = [
         'cliente_id',

@@ -20,7 +20,7 @@ class Cliente extends Model
     public function getNombreCompletoAttribute()
     {
         return $this->apellido 
-            ? "{$this->nombre} ({$this->apellido})" 
+            ? "{$this->nombre} {$this->apellido}" 
             : $this->nombre;
     }
 

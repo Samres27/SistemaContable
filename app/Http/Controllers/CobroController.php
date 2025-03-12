@@ -155,7 +155,7 @@ class CobroController extends Controller
                 $fecha = \Carbon\Carbon::parse($cliente->fecha);
                 return [
                     'id' => $cliente->id,
-                    'texto' => "Liquidación #{$cliente->id} - " . 
+                    'texto' => "Boleta #{$cliente->id} - " . 
                         $fecha->format('d/m/Y') . 
                         " - Total: $" . number_format($cliente->calcularTotalSaldo(), 2),
                     'cancelado' => $cliente->calcularCancelacion()

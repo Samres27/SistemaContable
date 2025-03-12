@@ -35,4 +35,9 @@ class Proveedor extends Model
     {
         return $this->liquidaciones()->count();
     }
+    
+    public function liquidacionesCount()
+    {
+        return $this->liquidaciones->count();
+    }
 }

@@ -78,4 +78,19 @@ class Liquidacion extends Model
 
         return $this->calcularTotal()- $totalDescuentos;
     }
+
+    public function calcularTotalPagos()
+    {
+        return $this->pagos->sum('monto');
+    }
+
+    public function calcularTotalSaldo()
+    {
+        return $this->total_descuento-$this->calcularTotalPagos();
+    }
+
+    public function calcularCancelacion()
+    {
+        return (($this->calcularTotalSaldo())<=0);
+    }
 }

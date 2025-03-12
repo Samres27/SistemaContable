@@ -8,6 +8,7 @@ use App\Http\Controllers\BoletaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\CobroController;
+use App\Http\Controllers\ReporteController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -94,8 +95,19 @@ Route::prefix('cobros')->group(function () {
     Route::get('/{cobro}/editar', [CobroController::class, 'edit'])->name('cobros.edit');
     Route::get('/{cobro}', [CobroController::class, 'show'])->name('cobros.show');
     Route::put('/{cobro}', [CobroController::class, 'update'])->name('cobros.update');
-    Route::delete('/{cobro}', [CobroController::class, 'destroy'])->name('pagos.destroy');
+    Route::delete('/{cobro}', [CobroController::class, 'destroy'])->name('cobros.destroy');
 });
+
+Route::prefix('reporte')->group(function () {
+    Route::get('/cliente/{clienteId}', [ReporteController::class, 'cliente'])->name('reporte.cliente');
+    Route::get('/cliente/{clienteId}/pendientes', [ReporteController::class, 'clientePendientes'])->name('reporte.cliente.pendientes');
+    Route::get('/clientes', [ReporteController::class, 'clientes'])->name('reporte.clientes');
+    Route::get('/proveedores', [ReporteController::class, 'proveedores'])->name('reporte.proveedores');
+    Route::get('/proveedor/{proveedorId}', [ReporteController::class, 'proveedor'])->name('reporte.proveedor');
+    Route::get('/proveedor/{proveedorId}/pendientes', [ReporteController::class, 'proveedorPendientes'])->name('reporte.proveedor.pendiente');
+});
+
+Route::get('/generar-pdf', [ReporteController::class, 'generatePDF']);
 
 Route::get('/impresiones/{imp}', function ($imp) {
     $viewPath = resource_path("views/impresiones/{$imp}.blade.php");
