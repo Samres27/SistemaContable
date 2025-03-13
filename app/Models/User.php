@@ -21,13 +21,19 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', // Añade el rol a los campos llenables
     ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+    
+    // Métodos de ayuda para verificar roles
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+    
+    public function isVisitor()
+    {
+        return $this->role === 'visitor';
+    }
     protected $hidden = [
         'password',
         'remember_token',

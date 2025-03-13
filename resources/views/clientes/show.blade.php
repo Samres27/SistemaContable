@@ -6,6 +6,14 @@
         <div class="card-header">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">Detalles del Cliente</h2>
         </div>
+        <div class="col-md-2 text-right  mb-10">
+            <a href="{{ route('reporte.cliente',$cliente->id) }}" class="m-3 p-2 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300">
+                Reporte Cliente
+            </a>
+            <a href="{{ route('reporte.cliente.pendientes',$cliente->id) }}" class="m-3 p-2 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300">
+                Reporte Cliente Pendiente
+            </a>
+        </div>
         <div class="grid md:grid-cols-2 gap-6">
             <div class="space-y-4">
                 <div class="col-md-6">

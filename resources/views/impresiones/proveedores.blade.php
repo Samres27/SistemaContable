@@ -17,7 +17,6 @@
             color: #1f2937;
             font-family: Arial, sans-serif;
             line-height: 1.5;
-            background-color: #f9fafb;
         }
         
         .container {
