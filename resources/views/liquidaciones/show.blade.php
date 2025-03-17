@@ -3,9 +3,7 @@
 @section('content')
 <div class="container">
     <div class="card">
-        <div class="card-header">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">Detalles de Liquidación</h2>
-        </div>
+        <x-PageHeaderShow title="Detalles de Liquidación"/>
         <div class="grid md:grid-cols-2 gap-6">
             <div class="space-y-4">
                 <div class="col-md-6">

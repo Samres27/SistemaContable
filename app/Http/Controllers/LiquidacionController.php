@@ -57,7 +57,7 @@ class LiquidacionController extends Controller
             'items.*.precio' => 'required|numeric|min:0.01',  
     
         ]);
-    
+        
         $liquidacion = new Liquidacion($request->all());
         
         $liquidacion->peso_neto = $liquidacion->calcularPesoNeto();
@@ -68,9 +68,9 @@ class LiquidacionController extends Controller
 
         $items = $request->input('items');
         
-       
-        if (!is_null($items) && count($items) < 0) {
         
+        if (!is_null($items) && count($items) > 0) {
+            
             foreach ($items as $item) {
                 $descuento = new Descuento($item);
                 $descuento->total = $descuento->calcularTotal();
