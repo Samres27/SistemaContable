@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Boleta;
 use App\Models\Proveedor;
+use App\Models\Liquidacion;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use mPDF;
@@ -54,6 +55,15 @@ class ReporteController extends Controller
         
         $pdf = PDF::loadView('impresiones.proveedores', compact('proveedores'));
         return $pdf->download('reporteProveedores_'.'.pdf');
+    }
+
+    public function liquidacion_ID( $liquidacionId)
+    {
+        $liquidacion= Liquidacion::findOrFail($liquidacionId);
+        $descuentos = $liquidacion->descuentos; 
+        $pdf = PDF::loadView('impresiones.liquidacion_cliente', compact('liquidacion','descuentos'));
+        return $pdf->download('liquidacion_'.$liquidacion->proveedor->nombre.'_'.$liquidacion->comprobante.'.pdf');
+        //return view('impresiones.liquidacion_cliente', compact('liquidacion','descuentos'));
     }
 
     public function proveedor($proveedorId)

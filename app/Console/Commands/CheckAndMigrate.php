@@ -3,6 +3,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CheckAndMigrate extends Command
 {
@@ -11,27 +12,15 @@ class CheckAndMigrate extends Command
 
     public function handle()
     {
-        // Lista de tablas que deberían existir
-        $tablas = ['boletas', 'clientes','ventas','cobros','liquidaciones','descuentos','pagos','productos','proveedores']; 
-
-        $faltanTablas = false;
-
-        foreach ($tablas as $tabla) {
-            if (!Schema::hasTable($tabla)) {
-                $this->info("La tabla '$tabla' no existe. Ejecutando migraciones...");
-                $faltanTablas = true;
-                break; // Si una tabla falta, ya es suficiente para ejecutar las migraciones
-            }
-        }
-
-        if ($faltanTablas) {
-            $this->call('migrate');
-            $this->info('Migraciones ejecutadas.');
-
+        $this->call('migrate');
+             
+        // Verificar si las migraciones ya han sido ejecutadas para evitar re-ejecutarlas
+        if (DB::table('users')->count() === 0) {
+            $this->info('Faltar Completar los usuarios');
             $this->call('db:seed', ['--class' => 'UserSeeder']);
             $this->info('Seeders ejecutados.');
         } else {
-            $this->info('Todas las tablas existen. No se requieren migraciones ni seeders.');
+            $this->info('Las migraciones ya han sido ejecutadas. No es necesario volver a ejecutarlas.');
         }
     }
 }

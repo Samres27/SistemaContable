@@ -4,6 +4,11 @@
 <div class="container">
     <div class="card">
         <x-PageHeaderShow title="Detalles de Liquidación"/>
+        <div class="col-md-2 text-right  mb-10">
+            <a href="{{ route('reporte.liquidacion.id',$liquidacion->id) }}" class="m-3 p-2 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300">
+                Reporte Liquidacion
+            </a>
+        </div>
         <div class="grid md:grid-cols-2 gap-6">
             <div class="space-y-4">
                 <div class="col-md-6">

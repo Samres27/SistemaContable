@@ -116,6 +116,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/proveedores', [ReporteController::class, 'proveedores'])->name('reporte.proveedores');
         Route::get('/proveedor/{proveedorId}', [ReporteController::class, 'proveedor'])->name('reporte.proveedor');
         Route::get('/proveedor/{proveedorId}/pendientes', [ReporteController::class, 'proveedorPendientes'])->name('reporte.proveedor.pendientes');
+        Route::get('/liquidacion/{liquidacionId}', [ReporteController::class, 'liquidacion_ID'])->name('reporte.liquidacion.id');
     });
 });
 Auth::routes();
