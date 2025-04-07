@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
-    <div class="container mx-auto max-w-4xl bg-white shadow-md rounded-lg p-8">
+    <div class="container mx-auto max-w-5xl bg-white shadow-md rounded-lg p-8">
         <h1 class="text-2xl font-bold mb-6 text-gray-800">Nueva Venta</h1>
         
         <form method="POST" action="{{ route('ventas.store') }}" >
@@ -44,6 +44,7 @@
             </div>
             <script>
                 const productos = @json($productos);
+                const envases = @json($envases);
             </script>
             <table  id="tabla" class="min-w-full divide-y divide-gray-200 mt-10 mb-10  hidden">
                 <thead class="bg-gray-50">
@@ -51,6 +52,9 @@
                         <th class="px-4 py-2 border">Productos</th>
                         <th class="px-4 py-2 border">Producto</th>
                         <th class="px-4 py-2 border">Cantidad</th>
+                        <th class="px-4 py-2 border">Envases</th>
+                        <th class="px-4 py-2 border">Cant. Envases</th>
+                        <th class="px-4 py-2 border">Cant. Neto</th>
                         <th class="px-4 py-2 border">Precio</th>
                         <th class="px-4 py-2 border">Resultado</th>
                     </tr>
@@ -74,7 +78,7 @@
     function calcularResultado() {
         const filas = document.querySelectorAll('#tabla-jaulas tr');
         filas.forEach(fila => {
-            const campoJaula = parseFloat(fila.querySelector('.campo-jaula').value) || 0;
+            const campoJaula = parseFloat(fila.querySelector('.campo-cantidad-neto').value) || 0;
             const precio = parseFloat(fila.querySelector('.precio-jaula').value) || 0;
             const resultado = campoJaula * precio;
             fila.querySelector('.resultado').textContent = resultado.toFixed(2);
@@ -85,7 +89,6 @@
         const select = event.target;
         const fila = select.closest('tr'); // Encuentra la fila correspondiente
         const productoId = select.value;  // Obtén el ID del producto seleccionado
-
 
         // Buscar el producto seleccionado en el array
         const productoSeleccionado = productos.find(producto => producto.id == productoId);
@@ -99,6 +102,35 @@
         }
     }
 
+
+    function cambiarPeso(event) {
+        const select = event.target;
+        const fila = select.closest('tr'); // Encuentra la fila correspondiente
+        const envaseId = select.value;  // Obtén el ID del producto seleccionado
+        
+        // Buscar el producto seleccionado en el array
+        const envaseSeleccionado = envases.find(envase => envase.id == envaseId);
+        if (envaseSeleccionado) {
+            // Actualiza el campo de precio
+            const precioCelda = fila.querySelector('.peso_e');
+            console.log(envaseSeleccionado);
+            precioCelda.value = parseFloat(envaseSeleccionado.peso).toFixed(2); // Asigna el precio con 2 decimales
+        }
+    }
+    
+    function calcularNeto() {
+        const filas = document.querySelectorAll('#tabla-jaulas tr');
+        filas.forEach(fila => {
+            const cantidad = parseFloat(fila.querySelector('.cantidad-jaula').value) || 0;
+            const cantidadEnv = parseFloat(fila.querySelector('.cantidad_e').value) || 0;
+            const peso = parseFloat(fila.querySelector('.peso_e').value) || 0;
+            const resultado = cantidad -(cantidadEnv * peso);
+
+            const netoCelda = fila.querySelector('.campo-cantidad-neto');
+            netoCelda.value = parseFloat(resultado).toFixed(2); 
+            calcularResultado()
+        });
+    }
 
     
 
@@ -116,36 +148,67 @@
                         @endforeach
                     </select>`;
 
+        
+
         // Crear las celdas para la nueva fila
         const celdaNombre = document.createElement('td');
         celdaNombre.classList.add('text-center');
         celdaNombre.innerHTML = `<input type="text" name="ventas[${index}][nombre]" class="nombre_p w-full text-center" placeholder="Nombre">`;
 
+        const celdaEnvase = document.createElement('td');
+        celdaEnvase.classList.add("text-center");
+        celdaEnvase.innerHTML = `<select  class="celda_envase w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                       <option>Seleccione</option>
+                        @foreach($envases as $envase)
+                            <option value="{{ $envase->id }}">{{ $envase->nombre }}</option>
+                        @endforeach
+                    </select>`;
+        const celdaCantidadEnv = document.createElement('td');
+        celdaCantidadEnv.classList.add('text-center');
+        celdaCantidadEnv.innerHTML = `<input type="number" name="ventas[${index}][cantidad_envase]" class="cantidad_e w-full text-center" value="0" step="0.01">`;
+
+        const celdaPesoEnv = document.createElement('td');
+        celdaPesoEnv.classList.add('hidden');
+        celdaPesoEnv.innerHTML = `<input type="number" name="ventas[${index}][peso_envase]" class="peso_e w-full text-center" value="0" step="0.01">`;
+
+
         const celdaCantidad = document.createElement('td');
         celdaCantidad.classList.add('text-center');
-        celdaCantidad.innerHTML = `<input type="number" name="ventas[${index}][cantidad]" class="campo-jaula w-full text-center" value="0">`;
+        celdaCantidad.innerHTML = `<input type="number" name="ventas[${index}][cantidad_bruto]" class="cantidad-jaula w-full text-center" value="0" step="0.01">`;
 
         const celdaPrecio = document.createElement('td');
         celdaPrecio.classList.add('text-center');
         celdaPrecio.innerHTML = `<input type="number" name="ventas[${index}][precio]" class="precio-jaula w-full text-center" value="0" step="0.01">`;
+
+        const celdaCantidadNeto = document.createElement('td');
+        celdaCantidadNeto.classList.add('text-center');
+        celdaCantidadNeto.innerHTML = `<input type="number" name="ventas[${index}][cantidad_neto]" class="campo-cantidad-neto w-full text-center" value="0" step="0.01" >`;
 
         const celdaResultado = document.createElement('td');
         celdaResultado.classList.add('text-center');
         celdaResultado.innerHTML = '<span class="resultado">0.00</span>';
 
         // Agregar las celdas a la nueva fila
-        nuevaFila.appendChild(celdaProducto);
+        nuevaFila.appendChild(celdaProducto);   
         nuevaFila.appendChild(celdaNombre);
+        nuevaFila.appendChild(celdaPesoEnv);
         nuevaFila.appendChild(celdaCantidad);
+        nuevaFila.appendChild(celdaEnvase);
+        nuevaFila.appendChild(celdaCantidadEnv);
+        nuevaFila.appendChild(celdaCantidadNeto);
         nuevaFila.appendChild(celdaPrecio);
         nuevaFila.appendChild(celdaResultado);
 
         // Agregar la nueva fila al cuerpo de la tabla
         tbody.appendChild(nuevaFila);
-        nuevaFila.querySelector('.campo-jaula').addEventListener('input', calcularResultado);
+        nuevaFila.querySelector('.campo-cantidad-neto').addEventListener('input', calcularResultado);
         nuevaFila.querySelector('.precio-jaula').addEventListener('input', calcularResultado);
-        const select = celdaProducto.querySelector('select');
-        select.addEventListener('change', cambiarPrecio);
+        const selectProducto1 = celdaProducto.querySelector('select');
+        selectProducto1.addEventListener('change', cambiarPrecio);
+        nuevaFila.querySelector('.cantidad_e').addEventListener('input', calcularNeto);
+        nuevaFila.querySelector('.cantidad-jaula').addEventListener('input', calcularNeto);
+        const selectProducto2 = celdaEnvase.querySelector('select');
+        selectProducto2.addEventListener('change', cambiarPeso);
         index++;
     }
 

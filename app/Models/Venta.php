@@ -12,7 +12,9 @@ class Venta extends Model
     protected $fillable = [
         'boleta_id',
         'nombre',
-        'cantidad', 
+        'cantidad_bruto',
+        'peso_envase',
+        'cantidad_neto', 
         'precio', 
         'total',
     ];   
@@ -22,8 +24,14 @@ class Venta extends Model
         return $this->belongsTo(Boleta::class, 'boleta_id');
     }
 
+    public function calcularNeto()
+    {
+        return $this->cantidad_bruto - $this->peso_envase;
+    }
+
+
     public function calcularTotal()
     {
-        return $this->cantidad * $this->precio;
+        return $this->cantidad_neto * $this->precio;
     }
 }

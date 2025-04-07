@@ -43,6 +43,10 @@
                        class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium m-auto">
                         Productos
                     </a>
+                    <a href="{{ route('envases.index') }}" 
+                       class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium m-auto">
+                        Envases
+                    </a>
                     <a href="{{ route('cobros.index') }}" 
                        class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium m-auto">
                         Cobros a clientes

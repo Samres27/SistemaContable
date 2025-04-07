@@ -26,7 +26,8 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-4 py-2 border">Nombre</th>
-                        <th class="px-4 py-2 border">Cantidad</th>
+                        <th class="px-4 py-2 border">Cantidad_bruto</th>
+                        <th class="px-4 py-2 border">Cantidad_neto</th>
                         <th class="px-4 py-2 border">Precio</th>
                         <th class="px-4 py-2 border">Total</th>
                     </tr>
@@ -65,7 +66,10 @@
                         <input type="text" name="items[${index}][nombre]" class="w-full text-center" value="${venta.nombre}" readonly>
                     </td>
                     <td class="text-center">
-                        <input type="number" name="items[${index}][cantidad]" class="campo-jaula w-full text-center" value="${venta.cantidad}" readonly>
+                        <input type="number" name="items[${index}][cantidad]" class="campo-jaula w-full text-center" value="${venta.cantidad_bruto}" readonly>
+                    </td>
+                    <td class="text-center">
+                        <input type="number" name="items[${index}][cantidad]" class="campo-jaula w-full text-center" value="${venta.cantidad_neto}" readonly>
                     </td>
                     <td class="text-center">
                         <input type="number" name="items[${index}][precio]" class="precio-jaula w-full text-center" value="${venta.precio}" readonly step="0.01">

@@ -6,6 +6,7 @@ use App\Models\Boleta;
 use App\Models\Venta;
 use App\Models\Cliente;
 use App\Models\Producto;
+use App\Models\Envase;
 use Illuminate\Http\Request;
 
 class BoletaController extends Controller
@@ -36,7 +37,8 @@ class BoletaController extends Controller
     {
         $clientes = Cliente::all();
         $productos = Producto::all();
-        return view('ventas.create', compact('clientes','productos'));
+        $envases = Envase::all();
+        return view('ventas.create', compact('clientes','productos','envases'));
     }
 
     public function store(Request $request)
@@ -45,7 +47,9 @@ class BoletaController extends Controller
             'cliente_id' => 'required|exists:clientes,id',
             'ventas' => 'required|array',
             'ventas.*.nombre' => 'required|string|max:255',  
-            'ventas.*.cantidad' => 'required|numeric|min:1',  
+            'ventas.*.cantidad_bruto' => 'required|numeric|min:0.1',
+            'ventas.*.peso_envase' => 'required|numeric|min:0.00',
+            'ventas.*.cantidad_envase' => 'required|numeric',  
             'ventas.*.precio' => 'required|numeric|min:0.01',  
         ]);
         
@@ -55,8 +59,10 @@ class BoletaController extends Controller
         $ventas = $request->input('ventas');
         foreach ($ventas as $item) {
             $venta = new Venta($item);
-            $venta->total = $venta->calcularTotal();
             $venta->boleta_id = $boleta->id;
+            $venta->peso_envase= $item['cantidad_envase'] * $item['peso_envase'];
+            $venta->cantidad_neto = $venta->calcularNeto();
+            $venta->total = $venta->calcularTotal();
             $venta->save();
         }
         
@@ -72,6 +78,7 @@ class BoletaController extends Controller
     {
         $boleta->load('cliente');
         $ventas = $boleta->ventas; 
+        
         return view('ventas.show', compact('boleta','ventas'));
     }
 
@@ -79,8 +86,9 @@ class BoletaController extends Controller
     {
         $clientes = Cliente::all();
         $productos = Producto::all();
+        $envases = Envase::all();
         $ventas = $boleta->ventas; 
-        return view('ventas.edit', compact('boleta', 'clientes','ventas','productos'));
+        return view('ventas.edit', compact('boleta', 'clientes','ventas','productos','envases'));
     }
 
     public function update(Request $request, Boleta $boleta)
@@ -88,10 +96,12 @@ class BoletaController extends Controller
         
         $request->validate([
             'cliente_id' => 'required|exists:clientes,id',
-            'ventas' => 'required|array',
+            'ventas' => 'required|array',  
             'ventas.*.nombre' => 'required|string|max:255',  
-            'ventas.*.cantidad' => 'required|numeric|min:0',  
-            'ventas.*.precio' => 'required|numeric|min:0.00',  
+            'ventas.*.cantidad_bruto' => 'required|numeric|min:0',
+            'ventas.*.peso_envase' => 'required|numeric|min:0',
+            'ventas.*.cantidad_envase' => 'required|numeric',  
+            'ventas.*.precio' => 'required|numeric|min:0.00', 
         ]);
         
         $boleta->fill($request->all());
@@ -105,8 +115,10 @@ class BoletaController extends Controller
             #agregar
             if ($item["id"] =="-1"){
                 $venta = new Venta($item);
-                $venta->total = $venta->calcularTotal();
                 $venta->boleta_id = $boleta->id;
+                $venta->peso_envase= $item['cantidad_envase'] * $item['peso_envase'];
+                $venta->cantidad_neto = $venta->calcularNeto();
+                $venta->total = $venta->calcularTotal();
                 if($venta->total){$venta->save();}
                 
             }else{

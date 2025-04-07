@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container">
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">Nuevo Producto</h1>
-    <form action="{{ route('productos.store') }}" method="POST" class="grid md:grid-cols-2 gap-6">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Nuevo Envase</h1>
+    <form action="{{ route('envases.store') }}" method="POST" class="grid md:grid-cols-2 gap-6">
         @csrf
         
             <div class="space-y-4">
@@ -17,8 +17,8 @@
             <div class="space-y-4">
             
                 <div class="form-group">
-                    <label class="block text-gray-700 font-medium mb-2">Precio</label>
-                    <input type="number" name="precio" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ old('nombre') }}">
+                    <label class="block text-gray-700 font-medium mb-2">Peso</label>
+                    <input type="number" name="peso" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\CobroController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\EnvaseController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -83,6 +84,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/{producto}', [ProductoController::class, 'show'])->name('productos.show');
         Route::put('/{producto}', [ProductoController::class, 'update'])->name('productos.update');
         Route::delete('/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+    });
+    Route::prefix('envases')->group(function () {
+        Route::get('/', [EnvaseController::class, 'index'])->name('envases.index');
+        Route::get('/crear', [EnvaseController::class, 'create'])->name('envases.create');
+        Route::post('/', [EnvaseController::class, 'store'])->name('envases.store');
+        Route::get('/{envase}/editar', [EnvaseController::class, 'edit'])->name('envases.edit');
+        Route::get('/{envase}', [EnvaseController::class, 'show'])->name('envases.show');
+        Route::put('/{envase}', [EnvaseController::class, 'update'])->name('envases.update');
+        Route::delete('/{envase}', [EnvaseController::class, 'destroy'])->name('envases.destroy');
     });
 
     Route::prefix('pagos')->group(function () {

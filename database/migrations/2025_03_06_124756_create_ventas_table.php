@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('boleta_id');
             $table->string('nombre');
-            $table->decimal('cantidad')->nullable();
+            $table->decimal('cantidad_bruto')->nullable();
+            $table->decimal('peso_envase')->nullable();
+            $table->decimal('cantidad_neto')->nullable();
             $table->decimal('precio')->nullable();
             $table->decimal('total')->nullable();
             $table->timestamps();
